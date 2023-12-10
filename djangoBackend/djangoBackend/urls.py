@@ -6,3 +6,4 @@ urlpatterns = [
     path('user', include('machineLearningAPI.urls')),
     path('admin/', admin.site.urls)
 ]
+    
