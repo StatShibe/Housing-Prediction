@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import  {useState}  from "react";
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import ResultDisplay from "./resultDashboard";
 
 function InputForm(){
 
@@ -22,6 +23,8 @@ function InputForm(){
         population: "",
         address: ""
       });
+
+      const [result, setResult] = useState(null);
 
       const handleChange = (e) => {
         const value = e.target.value;
@@ -59,9 +62,10 @@ function InputForm(){
         
         console.log(userData);
         axios
-      .post("http://127.0.0.1:8000/result",userData, { headers: { 'Content-Type': 'application/json' , 'Accept' : 'application/json'} })
+      .post("http://127.0.0.1:8000/result",JSON.stringify(userData))
       .then((response) => {
         console.log(response);
+        setResult(response.data.result);
       })
       .catch((error) => {
         if (error.response) {
@@ -77,7 +81,7 @@ function InputForm(){
 
       
 
-    return(
+    return(<>
             <Form style = {{display : 'flex', flexDirection : 'column', justifyContent : 'center', alignItems : 'center'}}>
                 <Form.Group className="mb-3" controlId="avgAreaIncome" style = {{width : '500px',textAlign : 'left'}}>
                     <Form.Label>Average Area Income</Form.Label>
@@ -110,6 +114,8 @@ function InputForm(){
                 </Form.Group>
 
             </Form>
+            <ResultDisplay resultval = {result}/>
+            </>
     );
 }
 

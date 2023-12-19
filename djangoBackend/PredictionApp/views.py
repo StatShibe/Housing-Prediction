@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -12,14 +13,13 @@ def predictor(request):
 
 @csrf_exempt
 def formInfo(request):
-    print(request.POST)
     print(request.body)
-
-    areaIncome = float(request.GET["avgAreaIncome"])
-    houseAge = float(request.GET["avgHouseAge"])
-    rooms = float(request.GET["avgRooms"])
-    population = float(request.GET["population"])
-    bedrooms = float(request.GET["avgBedrooms"])
+    data = json.loads(request.body.decode('utf-8'))
+    areaIncome = float(data["avgAreaIncome"])
+    houseAge = float(data["avgHouseAge"])
+    rooms = float(data["avgRooms"])
+    population = float(data["population"])
+    bedrooms = float(data["avgBedrooms"])
     #address = request.GET['address']
     y_pred = model.predict([[areaIncome, houseAge, rooms, population, bedrooms]])
     y_pred = int(y_pred)
